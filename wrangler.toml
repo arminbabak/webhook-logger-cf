@@ -4,8 +4,8 @@ compatibility_date = "2024-11-01"
 
 # Free tier: KV writes are 1,000/day. If Orbit sends more than that,
 # tell me and I'll switch storage to D1 (100,000 writes/day free).
-# Namespace auto-provisioned on the temp preview account; remove `id` to
-# re-provision when deploying to a different Cloudflare account.
+# Namespace "webhook-logger-events" on the production account; remove `id`
+# to re-provision when deploying to a different Cloudflare account.
 [[kv_namespaces]]
 binding = "EVENTS"
-id = "09603fdab39841eb9fde02ab4d76e972"
+id = "624ebd88cca34a7fb29ee2d8d2490d4e"

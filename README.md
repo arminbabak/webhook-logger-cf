@@ -45,6 +45,9 @@ No browser access? `pnpm exec wrangler deploy --temporary` publishes to a
 throwaway preview account (no login needed) and prints a claim URL that
 upgrades it to a full account within an hour.
 
+Deploy fails with `fetch failed` on a network with broken IPv6? Prefix the
+command: `NODE_OPTIONS=--dns-result-order=ipv4first pnpm run deploy`.
+
 Send a test request:
 ```sh
 curl -X POST https://<your-worker>.workers.dev/orbit/webhook \
