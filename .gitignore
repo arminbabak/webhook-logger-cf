@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+
+# Wrangler local state (dev server data, builds)
+.wrangler/
+
+# Local secrets (wrangler)
+.dev.vars
+.dev.vars.*
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Editor
+.idea/
+.vscode/
+*.swp

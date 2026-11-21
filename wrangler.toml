@@ -1,0 +1,9 @@
+name = "webhook-logger"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+
+# Free tier: KV writes are 1,000/day. If Orbit sends more than that,
+# tell me and I'll switch storage to D1 (100,000 writes/day free).
+[[kv_namespaces]]
+binding = "EVENTS"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"
