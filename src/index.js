@@ -102,7 +102,13 @@ async function logEvent(request, env) {
 async function listEvents(url, env) {
   const limit = Math.min(parseInt(url.searchParams.get("limit") || DEFAULT_LIST, 10) || DEFAULT_LIST, 1000);
   const q = (url.searchParams.get("q") || "").toLowerCase();
-  const result = await env.EVENTS.list({ limit });
+  let result;
+  try {
+    result = await env.EVENTS.list({ limit });
+  } catch (e) {
+    // Free tier allows only 1,000 KV list() calls/day; surface it cleanly.
+    return json({ error: "kv list failed", detail: String((e && e.message) || e) }, 500);
+  }
   let events = await Promise.all(
     result.keys.map((k) => env.EVENTS.get(k.name, "json").catch(() => null))
   );
@@ -607,7 +613,8 @@ function load(keepSelection) {
 
 function setAuto(on) {
   if (state.timer) clearInterval(state.timer);
-  state.timer = on ? setInterval(function () { load(true); tickTimes(); }, 4000) : null;
+  // 30s + skip while tab hidden: free KV allows only 1,000 list()/day.
+  state.timer = on ? setInterval(function () { if (!document.hidden) { load(true); tickTimes(); } }, 30000) : null;
 }
 
 // ---------- wiring ----------
