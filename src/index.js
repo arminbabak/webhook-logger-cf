@@ -300,6 +300,7 @@ function page() {
   <span class="spacer"></span>
   <input type="search" id="search" placeholder="Filter events...">
   <label class="toggle"><input type="checkbox" id="auto" checked> live</label>
+  <button id="refresh" title="Check for new events now">&#8635; Refresh</button>
   <button id="clear" class="danger">Clear all</button>
 </header>
 
@@ -613,8 +614,9 @@ function load(keepSelection) {
 
 function setAuto(on) {
   if (state.timer) clearInterval(state.timer);
-  // 30s + skip while tab hidden: free KV allows only 1,000 list()/day.
-  state.timer = on ? setInterval(function () { if (!document.hidden) { load(true); tickTimes(); } }, 30000) : null;
+  // 60s + skip while tab hidden: free KV allows only 1,000 list()/day.
+  // Use the Refresh button for instant checks between polls.
+  state.timer = on ? setInterval(function () { if (!document.hidden) { load(true); tickTimes(); } }, 60000) : null;
 }
 
 // ---------- wiring ----------
@@ -629,6 +631,9 @@ $("search").addEventListener("input", function (e) {
   renderList();
 });
 $("auto").addEventListener("change", function (e) { setAuto(e.target.checked); });
+$("refresh").addEventListener("click", function () {
+  load(true).then(function () { toast("Refreshed", "success"); tickTimes(); });
+});
 $("clear").addEventListener("click", function () {
   if (!confirm("Delete ALL logged requests?")) return;
   fetch("/api/events", { method: "DELETE" }).then(function () { return load(); })
