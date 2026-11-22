@@ -156,6 +156,7 @@ function page() {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='5' fill='%230d1117'/%3E%3Crect x='0.5' y='0.5' width='23' height='23' rx='4.5' fill='none' stroke='%2330363d'/%3E%3Cpolygon points='13%202%203%2014%2012%2014%2011%2022%2021%2010%2012%2010%2013%202' transform='translate(1.2%201.2)%20scale(0.9)' fill='%2358a6ff'/%3E%3C/svg%3E">
 <title>Webhook Inspector</title>
 <style>
   :root {
