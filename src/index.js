@@ -591,6 +591,10 @@ function load(keepSelection) {
   return fetch("/api/events?limit=200")
     .then(function (r) { return r.json(); })
     .then(function (data) {
+      if (!data || data.error) {
+        toast("Couldn't load events: " + ((data && (data.detail || data.error)) || "load failed"), "error");
+        return false;
+      }
       state.events = data.events || [];
       if (!keepSelection || (state.selectedId && !state.events.some(function (e) { return e.id === state.selectedId; }))) {
         if (!state.selectedId || !state.events.some(function (e) { return e.id === state.selectedId; })) {
@@ -608,8 +612,9 @@ function load(keepSelection) {
         var pane = $("list-pane");
         pane.scrollTop = 0;
       }
+      return true;
     })
-    .catch(function () { /* dev server restart etc. */ });
+    .catch(function () { /* dev server restart etc. */ return false; });
 }
 
 function setAuto(on) {
@@ -632,7 +637,7 @@ $("search").addEventListener("input", function (e) {
 });
 $("auto").addEventListener("change", function (e) { setAuto(e.target.checked); });
 $("refresh").addEventListener("click", function () {
-  load(true).then(function () { toast("Refreshed", "success"); tickTimes(); });
+  load(true).then(function (ok) { if (ok) toast("Refreshed", "success"); tickTimes(); });
 });
 $("clear").addEventListener("click", function () {
   if (!confirm("Delete ALL logged requests?")) return;
